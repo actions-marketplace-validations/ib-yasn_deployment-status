@@ -22,6 +22,10 @@ inputs:
     required: false
   delete_environment:
     description: "The ID of the deployment"
+    required: falses
+  environment:
+    description: "The name of the environment for the deployment"
+    default: "production"
     required: false
 runs:
   using: "node12"

@@ -99,5 +99,6 @@ jobs:
           target_url: http://my-app-url.com
           environment: staging
           delete_environemt: true
+          environemt: staging
         env:
           GITHUB_TOKEN: "${{ github.token }}"
