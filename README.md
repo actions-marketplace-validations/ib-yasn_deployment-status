@@ -9,15 +9,23 @@ Works great with my other action to create Deployments, [chrnorm/deployment-acti
 | name              | description                                                                                                                           |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | `state`           | The state to set the deployment to. Must be one of the below: "error" "failure" "inactive" "in_progress" "queued" "pending" "success" |
-| `token`           | GitHub token                                                                                                                          |
+| `deployment_id`      | (Optional) The id of the deployment. Can be omitted in case of delation                                                         |
 | `target_url`      | (Optional) The target URL. This should be the URL of the app once deployed                                                            |
 | `description`     | (Optional) Descriptive message about the deployment                                                                                   |
 | `environment_url` | (Optional) Sets the URL for accessing your environment                                                                                |
-| `deployment_id`   | The ID of the deployment to update                                                                                                    |
+| `delete_environment`   | (Optional a flag to delete the deployment environemt)                                                                            |
+
+
+## Required Enrivonment variables
+
+| name            | description                                            |
+| --------------- | ------------------------------------------------------ |
+| `GITHUB_TOKEN` | GitHub token |
 
 ## Usage example
 
 The below example includes `chrnorm/deployment-action` and `chrnorm/deployment-status` to create and update a deployment within a workflow.
+
 
 ```yaml
 name: Deploy
@@ -33,45 +41,63 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: chrnorm/deployment-action@releases/v1
+      - uses: ib-yasn/deployment-action@v1
         name: Create GitHub deployment
         id: deployment
         with:
-          token: "${{ github.token }}"
           target_url: http://my-app-url.com
-          environment: production
-
+          environment: staging
+        env:
+          GITHUB_TOKEN: "${{ github.token }}"
       - name: Deploy my app
         run: |
           # add your deployment code here
-
       - name: Update deployment status (success)
         if: success()
-        uses: chrnorm/deployment-status@releases/v1
+        uses: ib-yasn/deployment-status@v1
         with:
-          token: "${{ github.token }}"
           target_url: http://my-app-url.com
           state: "success"
+          environment: staging
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-
+        env:
+          GITHUB_TOKEN: "${{ github.token }}"
+          
       - name: Update deployment status (failure)
         if: failure()
-        uses: chrnorm/deployment-status@releases/v1
+        uses: ib-yasn/deployment-status@v1
         with:
-          token: "${{ github.token }}"
           target_url: http://my-app-url.com
           state: "failure"
+          environment: staging
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+        env:
+          GITHUB_TOKEN: "${{ github.token }}"
+         
 ```
+## Delete an environment
 
-## Development
+```yaml
+name: Deploy
 
-Install dependencies with `npm install`.
+on: [push]
 
-## Building
+jobs:
+  deploy:
+    name: Deploy my app
 
-First build Typescript with `npm run build`. Then package to a single JS file with `npm run pack`. The `pack` step uses `ncc`(https://github.com/zeit/ncc) as specified in the Typescript GitHub Actions template.
+    runs-on: ubuntu-latest
 
-## Testing
+    steps:
+      - uses: actions/checkout@v1
 
-There is a validation workflow in `.github/workflows/validate.yml` which performs a basic smoke test against the action to check that it runs.
+      - uses: ib-yasn/deployment-status@v1
+        name: Create GitHub deployment
+        id: deployment
+        with:
+          state: "inactive"
+          target_url: http://my-app-url.com
+          environment: staging
+          delete_environemt: true
+        env:
+          GITHUB_TOKEN: "${{ github.token }}"
