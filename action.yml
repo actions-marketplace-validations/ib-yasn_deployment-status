@@ -1,4 +1,4 @@
-name: "Deployment Status"
+name: "Deployment Status Wardell"
 description: "Creates a GitHub Deployment status update"
 author: "chrnorm"
 branding:
@@ -7,9 +7,6 @@ branding:
 inputs:
   state:
     description: "State for the deployment"
-    required: true
-  token:
-    description: "Github repository token"
     required: true
   target_url:
     description: "Target url location"
@@ -22,7 +19,10 @@ inputs:
     required: false
   deployment_id:
     description: "The ID of the deployment"
-    required: true
+    required: false
+  delete_environment:
+    description: "The ID of the deployment"
+    required: false
 runs:
   using: "node12"
   main: "dist/index.js"

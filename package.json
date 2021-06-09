@@ -1,13 +1,13 @@
 {
-  "name": "deployment-status",
+  "name": "deployment-action",
   "version": "0.1.0",
   "private": true,
-  "description": "GitHub action to update deployment status",
+  "description": "JavaScript template action",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "pack": "./node_modules/.bin/ncc build"
+    "pack": "ncc build"
   },
   "repository": {
     "type": "git",
@@ -18,19 +18,20 @@
     "node",
     "setup"
   ],
-  "author": "chrnorm",
+  "author": "YourNameOrOrganization",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.0.0",
-    "@actions/github": "^1.1.0",
-    "@zeit/ncc": "^0.22.2"
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^3.0.0",
+    "@octokit/types": "^5.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.13",
-    "@types/node": "^12.0.4",
-    "jest": "^24.8.0",
-    "jest-circus": "^24.7.1",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.5.1"
+    "@types/jest": "^26.0.0",
+    "@types/node": "^14.0.13",
+    "@zeit/ncc": "^0.22.3",
+    "jest": "^26.0.1",
+    "jest-circus": "^25.1.0",
+    "ts-jest": "^26.1.0",
+    "typescript": "^3.9.5"
   }
 }
