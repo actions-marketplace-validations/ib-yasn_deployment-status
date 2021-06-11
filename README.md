@@ -14,6 +14,7 @@ Works great with my other action to create Deployments, [chrnorm/deployment-acti
 | `description`     | (Optional) Descriptive message about the deployment                                                                                   |
 | `environment_url` | (Optional) Sets the URL for accessing your environment                                                                                |
 | `delete_environment`   | (Optional a flag to delete the deployment environemt)                                                                            |
+| `environment`   | (Optional an environment to be deleted)                                                                            |
 
 
 ## Required Enrivonment variables
